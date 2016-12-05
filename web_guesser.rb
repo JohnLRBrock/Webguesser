@@ -6,7 +6,11 @@ get '/' do
   guess = params['guess']
   message = check_guess(guess, number)
   secret_number_line = correct_guess?(guess, number)
-  erb :index, :locals => { :message => message, :secret_number_line => secret_number_line }
+  style = style(message)
+  erb :index, :locals => { :message => message, 
+                           :secret_number_line => secret_number_line, 
+                           :style => style
+                          }
 end
 
 def check_guess(guess, number)
@@ -27,4 +31,15 @@ end
 
 def correct_guess?(guess, number)
   params['guess'].to_i == number ? secret_number_line = "The secret number was #{number}." : ''
+end
+
+def style(message)
+  if message == 'Way too high!' || message == 'Way too low!'
+    color = '#f02'
+  elsif message == 'Too low!' || message == 'Too high!'
+    color = '#f99'
+  elsif message == 'You got it right!'
+    color = '#0f0'
+  end
+ "body {\nbackground: #{color};\n}"
 end
