@@ -2,7 +2,14 @@
   <head></head>
   <body>
     <p>
-      The secret number is <%= mystery_number %>. Don't tell anyone!
+      <%= message %>
     </p>
+    <p>
+      <%= secret_number_line %>
+    </p>
+    <form>
+      <input type='text' name='guess' />
+      <input type='submit' value='guess' />
+    </form>
   </body>
 </html>

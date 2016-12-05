@@ -1,6 +1,30 @@
 require 'sinatra'
 require 'sinatra/reloader'
-mystery_number = rand(101)
+number = rand(101)
+secret_number_line = ''
 get '/' do
-  erb :index, :locals => {:mystery_number => mystery_number }
+  guess = params['guess']
+  message = check_guess(guess, number)
+  secret_number_line = correct_guess?(guess, number)
+  erb :index, :locals => { :message => message, :secret_number_line => secret_number_line }
+end
+
+def check_guess(guess, number)
+  if params['guess'].nil?
+    message = 'Guess my mystery number.'
+  elsif params['guess'].to_i < number - 5
+    message = 'Way too low!'
+  elsif params['guess'].to_i > number + 5
+    message = 'Way too high!'
+  elsif params['guess'].to_i > number
+    message = 'Too high!'
+  elsif params['guess'].to_i < number
+    message = 'Too low!'
+  elsif params['guess'].to_i == number
+    message = 'You got it right!'
+  end
+end
+
+def correct_guess?(guess, number)
+  params['guess'].to_i == number ? secret_number_line = "The secret number was #{number}." : ''
 end
